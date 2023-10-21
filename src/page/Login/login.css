@@ -1,0 +1,21 @@
+.Loginboby {
+    margin: 0 auto;
+    padding: 20px;
+    width: 440px;
+    height: 100vh;
+    /* border: 1px solid rgba(0, 0, 0, 0.041); */
+    text-align: center;
+}
+.Loginboby>p{
+    font-size: 24px;
+    color:#40a9ff ;
+}
+.loginfrom{
+    padding: 20px;
+    width: 400px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.041);
+}
+.login-form{
+    text-align: left;
+}      

@@ -1,0 +1,16 @@
+.centen{
+    margin: 50px auto;
+    width: 80%;
+    
+}
+.centen-det{
+    width: 100%;
+    /* height: 600px; */
+    background-color: salmon;
+}
+.custom-dark-card-body>div,.custom-default-card-body>div{
+    margin-top: 16px ;
+}
+.custom-dark-space-item{
+    font-size: 12px;
+}
