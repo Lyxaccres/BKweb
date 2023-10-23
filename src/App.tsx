@@ -6,7 +6,7 @@ import { ConfigProvider, Col, Row, Switch } from 'antd';
 import router from './router/router'
 import "./theme/custom-dark.css"
 import "./theme/custom-default.css"
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { Route, useNavigate, useRoutes } from 'react-router-dom';
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 
 
@@ -112,8 +112,10 @@ function App() {
         </div>
 
         <div className="potion">
-
+          
           {element}
+          
+          
           {/* <RouterProvider router={Router}></RouterProvider> */}
 
         </div>
