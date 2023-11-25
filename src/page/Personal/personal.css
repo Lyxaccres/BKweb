@@ -7,8 +7,8 @@
     height: 40vh;
     object-fit: cover;
     position: absolute;
+    
 }
-
 .personal{
     margin: 0 auto;
     width: 90%;
@@ -41,7 +41,9 @@
 
 .personal-message{
     width: 100%;
-    height: 500px;
+    /* position: absolute; */
+    /* height: 500px; */
+    
     padding: 10px;
-    background-color: rgb(161, 161, 161);
+    /* background-color: rgb(158, 42, 42); */
 }

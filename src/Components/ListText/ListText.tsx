@@ -6,10 +6,7 @@ import './ListText.css'
 import { GetArticle } from './server'
 
 
-
-
-
-const App: React.FC = () => {
+const App: React.FC = (props) => {
   const navigate = useNavigate();
   const [sizes, setSize] = useState(1);
   const count = 12;
@@ -22,66 +19,6 @@ const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,
   const [list, setList] = useState<Array<{
     [key:string]:string}>>(
     [
-      // {
-      //   StarOut:'1770',
-      //   LikeOut:'36',
-      //   MessageOut:'17',
-      //   href: 'https://ant.design',
-      //   title: `ant design part b`,
-      //   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=b`,
-      //   description:
-      //     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      //   content:
-      //     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      // },
-      // {
-      //   StarOut:'1770',
-      //   LikeOut:'36',
-      //   MessageOut:'17',
-      //   href: 'https://ant.design',
-      //   title: `ant design part c`,
-      //   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=c`,
-      //   description:
-      //     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      //   content:
-      //     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      // },
-      // {
-      //   StarOut:'1770',
-      //   LikeOut:'36',
-      //   MessageOut:'17',
-      //   href: 'https://ant.design',
-      //   title: `ant design part d`,
-      //   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=d`,
-      //   description:
-      //     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      //   content:
-      //     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      // },
-      // {
-      //   StarOut:'1233',
-      //   LikeOut:'326',
-      //   MessageOut:'117',
-      //   href: 'https://ant.design',
-      //   title: `ant design part e`,
-      //   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=e`,
-      //   description:
-      //     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      //   content:
-      //     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      // },
-      // {
-      //   StarOut:'17',
-      //   LikeOut:'6',
-      //   MessageOut:'1',
-      //   href: 'https://ant.design',
-      //   title: `ant design part f`,
-      //   avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=f`,
-      //   description:
-      //     'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      //   content:
-      //     'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      // }
     ]
   );
 
@@ -104,6 +41,7 @@ const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,
     //   });
     setSize(1)
     const params = {
+      usguid:props.uid,
       size:count,
       page:sizes,
       // usguid:JSON.parse(storedPerson).guid
@@ -185,8 +123,8 @@ const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,
           ]}
           extra={
             <img
-              width={272}
-              height={168}
+              width={200}
+              height={100}
               alt="logo"
               src={item.cover}
             />

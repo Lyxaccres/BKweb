@@ -11,16 +11,6 @@ import Router from '../router/router';
 
 const App: React.FC = (props) => {
   const items: MenuProps['items'] = props.Menuitem;
-  const item = [
-    {
-      key: '1',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          1st menu item
-        </a>
-      ),
-    },
-  ];
   const [current, setCurrent] = useState('mail');
   //const [theme] = useState<MenuTheme>('light');
   const navigate = useNavigate();
@@ -60,17 +50,18 @@ const App: React.FC = (props) => {
         <Space size={20} wrap style={{ width: "400px" }}>
           <div >
             {/*  */}
-            {<Link to={getStorage('BK_User').nickname != null ? '/' : '/Login'}>
+            {<Link to={getStorage('BK_User').nickname != null ? '/Personal' : '/Login'}>
               {
                 getStorage('BK_User').nickname != null ?
-                  <Dropdown menu={items}>
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Space onClick={getSin}>
-                        {getStorage('BK_User').nickname}
-                        <DownOutlined />
-                      </Space>
-                    </a>
-                  </Dropdown>
+                getStorage('BK_User').nickname
+                  // <Dropdown menu={item}>
+                  //   <a onClick={(e) => e.preventDefault()}>
+                  //     <Space onClick={getSin}>
+                  //       {getStorage('BK_User').nickname}
+                  //       <DownOutlined />
+                  //     </Space>
+                  //   </a>
+                  // </Dropdown>
                   : "登录"}
             </Link>}
             {/* <a type="link" size={'default'} > {localStorage.getItem('BK_User') != null ? JSON.parse(localStorage.getItem('BK_User')).nickname : "没登录"} </a> */}

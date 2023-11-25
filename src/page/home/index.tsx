@@ -64,7 +64,7 @@ const Home: React.FC = () => {
       <br />
       <div className="text">
         <Row gutter={24}>
-          <Col span={10}>
+          {/* <Col span={10}>
             <Card
               style={{ width: '100%', height: '321px' }}
               title="-------"
@@ -74,17 +74,17 @@ const Home: React.FC = () => {
             >
               {contentList[activeTabKey1]}
             </Card>
-          </Col>
-          <Col span={8}>
+          </Col> */}
+          {/* <Col span={8}>
             <Card
               style={{ width: '100%', height: '321px' }}
             >
               <Button type="primary" onClick={handelDelete}>Primary Button</Button>
             </Card>
-          </Col>
-          <Col span={6}>
+          </Col> */}
+          {/* <Col span={6}>
               <Calen width={'100%'}></Calen>
-          </Col>
+          </Col> */}
           <Col span={18}>
           <Card
               style={{ width: '100%', height: '100%' , margin:'12px 0 0 0'}}

@@ -6,7 +6,7 @@ import Register from '../page/Login/Register/index'
 import Personal from '../page/Personal/index'
 import Details from '../page/Details'
 import Personal_details from '../page/Personal/Personal_details/index'
-import { Outlet } from 'react-router-dom'
+import Homes from '../page/Personal/homes/index'
 
 
 export default  [
@@ -31,16 +31,16 @@ export default  [
         element:<Personal></Personal>,
         children:[
             {
-                label:"笔记",
-                key:'login',
-                path:'login',
-                element:<Login></Login>,
+                // label:"笔记",
+                key:'homes',
+                path:'homes',
+                element:<Homes></Homes>,
             },
             {
-                label:"个人信息",
-                key:'abc',
-                path:'abc',
-                element:<Register></Register>,
+                // label:"个人信息",
+                key:'Personal_details',
+                path:'Personal_details',
+                element:<Personal_details></Personal_details>,
             }
         ]
     },

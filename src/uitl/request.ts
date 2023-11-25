@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getStorage} from './localStotage'
 
 
 const TIMEOUT = 10000;
@@ -18,7 +19,7 @@ service.interceptors.request.use(
     // config.headers.Authorization = `Bearer ${localStorage.getItem("BK_Token")}`
     config.headers = {
       "Content-Type": "application/json",
-      "Authorization":`Bearer ${localStorage.getItem("BK_Token")}`
+      "Authorization":`Bearer ${getStorage("BK_User").token}`
       // "cjwdblzs":localStorage.getItem("BK_Token")
     };
     return config;
@@ -33,13 +34,21 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(
   (response) => {
-    if (response.data.errCode === 2) {
+    if (response.data.errCode === 401) {
       console.log("过期");
     }
     return response;
   },
   (error) => {
-    console.log("请求出错：", error);
+    if(error.request.status==401){
+      console.log("请求出错401：", error);
+
+      window.location.href = "/Login";
+    }
+    else{
+      console.log("请求出错：", error);
+    }
+    // console.log("请求出错401：", error);
   }
 );
 

@@ -1,28 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Image, Menu, Space, Descriptions, Row, Col, Card, Tag } from 'antd';
 import type { MenuProps } from 'antd';
 import { Outlet, NavLink, Route, Routes, useNavigate, useRoutes } from 'react-router-dom';
 import "./personal.css"
-import Personal_details from './Personal_details';
+import {getStorage} from '../../uitl/localStotage';
 import router from '../../router/router';
 import { useLocation } from 'react-router'
-import Login from '../Login';
 
 
 const Personal: React.FC = (props) => {
-    const location = useLocation()
     const navigate = useNavigate();
-    // const { children } = router.filter(item => item.path === location.pathname)[0]
-    const Element = useRoutes(router);
+    useEffect(()=>{
+        if(getStorage('BK_User').guid==null){
+            navigate("/Login", { replace: false })
+        }
+        
+    },[])
     const [menuitem, setMenuitem] = useState([
         {
             label: '我的文章',
-            key: 'login',
+            key: 'homes',
             icon: '',
         },
         {
             label: '编辑信息',
-            key: 'abc',
+            key: 'Personal_details',
             icon: '',
         },
 
@@ -71,14 +73,16 @@ const Personal: React.FC = (props) => {
     return (
         <>
             <div className="box">
-                <img className="box-img" src="src\assets\6086c3fe8db8509f0d365f81744ef998.jpeg" alt="" />
+                    <img className="box-img" src="src\assets\6086c3fe8db8509f0d365f81744ef998.jpeg" alt="" />
+                
                 <div className="box-bg">
                     <div className="personal">
                         <div className="personal-top">
-                            <Image className="personal-img"
+                                <Image className="personal-img"
                                 width={140}
                                 src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                             />
+                            
                             <div className="personal-top-text" style={{ fontSize: '18px', color: '#fff', position: 'relative' }}>
                                 <div>昵称
                                     <Space size={1} style={{ marginLeft: '10px' }}>
@@ -106,19 +110,21 @@ const Personal: React.FC = (props) => {
                         <div className="personal-message">
                             <Row gutter={24}>
                                 <Col span={4}>
-                                    <Card bordered={false} >
+                                    <Card bordered={false} style={{borderRadius:10}}>
                                         <Menu
                                             onClick={onClick}
                                             style={{ padding: '0' }}
-                                            defaultSelectedKeys={['/login']}
+                                            defaultSelectedKeys={['homes']}
                                             mode="inline"
                                             items={menuitem}
                                         />
                                     </Card>
                                 </Col>
-                                <Col span={20}>
-                                    <Card bordered={false}>
-                                        <Outlet />
+                                <Col span={20} >
+                                    <Card bordered={false} style={{height:"700px",borderRadius:10,overflow:"auto"}}>
+                                        <div style={{padding:10}}>
+                                            <Outlet />
+                                        </div>
                                     </Card>
                                 </Col>
                             </Row>

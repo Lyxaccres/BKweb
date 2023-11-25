@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react'
 import { Radio, Input, Upload, Form, Card, Col, Row, Button, message, Tag, Space, Cascader } from 'antd';
 import type { UploadProps } from 'antd';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
+import { useNavigate } from "react-router-dom";
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { AddArticle } from './server'
+import { getStorage } from '../../uitl/localStotage';
 
 
 const ArticleEditor: React.FC = () => {
@@ -31,9 +33,15 @@ const ArticleEditor: React.FC = () => {
         settaglist(ta)
 
     };
+    const navigate = useNavigate();
 
     // 模拟 ajax 请求，异步设置 html
     useEffect(() => {
+
+        if (getStorage('BK_User').guid == null) {
+            navigate("/Login", { replace: false })
+        }
+
         setTimeout(() => {
             setHtml('<p>hello world</p>')
         }, 1500)
@@ -145,10 +153,10 @@ const ArticleEditor: React.FC = () => {
 
     return (
         <>
-            
+
             <Row gutter={24}>
                 <Col span={24}>
-                {contextHolder}
+                    {contextHolder}
                     <Card>
                         <Button type="primary" onClick={getArticle}>Primary Button</Button>
                     </Card>
@@ -193,6 +201,7 @@ const ArticleEditor: React.FC = () => {
                                         <PlusOutlined />
                                         <div style={{ marginTop: 8 }}>添加文章封面</div>
                                     </div>
+                                    {imgsrc != "" && '+ Upload'}
                                 </Upload>
                             </Form.Item>
                             <Form.Item label="文章类型">
