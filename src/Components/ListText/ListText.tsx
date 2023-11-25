@@ -10,11 +10,9 @@ const App: React.FC = (props) => {
   const navigate = useNavigate();
   const [sizes, setSize] = useState(1);
   const count = 12;
-const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,email,nat,picture&noinfo`;
   const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>([]);
-  let storedPerson = localStorage.getItem("BK_User")
   
   const [list, setList] = useState<Array<{
     [key:string]:string}>>(
@@ -32,13 +30,6 @@ const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,
     </Space>
   );
   useEffect(() => {
-    // fetch(fakeDataUrl)
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     setInitLoading(false);
-    //     setData(res.results);
-    //     setList(res.results);
-    //   });
     setSize(1)
     const params = {
       usguid:props.uid,
@@ -49,14 +40,14 @@ const fakeDataUrl = `https://randomuser.me/api/?result=${count}&inc=name,gender,
     GetArticle(params)
     // .then((res) => res.json())
     .then((res) => {
-      console.log(res.data.data)
+      // console.log(res.data.data)
           setInitLoading(false);
           setData(res.data.data.result);
           setList(res.data.data.result);
           setSize(sizes+1)
-          console.log(res.data.data.result.length)
+          // console.log(res.data.data.result.length)
           if(res.data.data.result.length<count){
-            setLoading(true);
+            setInitLoading(true)
           }
         })
   }, []);

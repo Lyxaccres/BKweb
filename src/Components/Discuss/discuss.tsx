@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import { Card, Avatar, Space, List, Skeleton, Button, Input, Anchor } from 'antd';
-import { GetDiscuss,PublishDiscuss } from './server';
+import { Card, Avatar, Space, List, Skeleton, Button, Input, message } from 'antd';
+import { GetDiscuss, PublishDiscuss } from './server';
 import { getStorage } from '../../uitl/localStotage';
+import { useNavigate } from 'react-router-dom';
 
 const Discuss: React.FC = (props) => {
     useEffect(() => {
+        setSize(1)
         const searchParams = new URLSearchParams(window.location.search);
         const params = {
+            size: count,
+            page: sizes,
             art_id: searchParams.get('id')
         }
 
@@ -16,18 +20,18 @@ const Discuss: React.FC = (props) => {
             setInitLoading(false);
             setData(res.data.data);
             setList(res.data.data);
+            setSize(sizes + 1)
+            if (res.data.data.length < count) {
+                setLoading(true);
+            }
         })
-        // fetch(fakeDataUrl)
-        //     .then((res) => res.json())
-        //     .then((res) => {
-        //         setInitLoading(false);
-        //         // setData(res.results);
-        //         // setList(res.results);
-        //     });
 
     }, [])
 
+
     const { TextArea } = Input;
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
     const [textAreavalue, setTextAreavalue] = useState(String);
     const [defAreavalue, setDeftAreavalue] = useState("评论留言");
     const [pardis, setpardis] = useState(-1);
@@ -46,7 +50,8 @@ const Discuss: React.FC = (props) => {
     const [list, setList] = useState<DataType[]>([
 
     ]);
-    const count = 3;
+    const [sizes, setSize] = useState(1);
+    const count = 5;
     const [reply_comment_id, setReply_comment_id] = useState(Number);
     const [reply_user_id, setReply_user_id] = useState(String);
     const [initLoading, setInitLoading] = useState(true);
@@ -81,31 +86,46 @@ const Discuss: React.FC = (props) => {
 
     const showAreaDisuss = (comment_id: number, user_id: string, name: string) => {
 
-        let anchorElement = document.getElementById("part-1");
-        // 如果对应id的锚点存在，就跳转到锚点
-        if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
-        setpardis(1)//标记子评论        
-        setDeftAreavalue("回复 @" + name)
-        setReply_comment_id(comment_id)
-        setReply_user_id(user_id)
-
+        if (getStorage('BK_User').guid == user_id) {
+            messageApi.open({
+                type: 'error',
+                content: "你不能回复自己哦",
+            });
+        } else {
+            let anchorElement = document.getElementById("part-1");
+            // 如果对应id的锚点存在，就跳转到锚点
+            if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+            setpardis(1)//标记子评论        
+            setDeftAreavalue("回复 @" + name)
+            setReply_comment_id(comment_id)
+            setReply_user_id(user_id)
+        }
     };
 
     const subTextArea = () => {
-        const searchParams = new URLSearchParams(window.location.search);
-        
-        const params = {
-            parent: pardis,
-            user_id: getStorage('BK_User').guid,
-            comment: textAreavalue,
-            contentid: searchParams.get('id'),//文章id
-            reply_comment_id: reply_comment_id,//评论id
-            reply_user_id: reply_user_id//回复给哪个用户的id
+
+        if (getStorage('BK_User').guid == null) {
+            navigate("/Login", { replace: false })
         }
-        PublishDiscuss(params).then(res=>{
-            console.log(res);
-        })
-        
+        else {
+            const searchParams = new URLSearchParams(window.location.search);
+
+            const params = {
+                parent: pardis,
+                user_id: getStorage('BK_User').guid,
+                comment: textAreavalue,
+                contentid: searchParams.get('id'),//文章id
+                reply_comment_id: reply_comment_id,//评论id
+                reply_user_id: reply_user_id//回复给哪个用户的id
+            }
+
+            console.log(params)
+            PublishDiscuss(params).then(res => {
+                console.log(res);
+            })
+        }
+
+
     }
 
 
@@ -113,17 +133,45 @@ const Discuss: React.FC = (props) => {
     const onLoadMore1 = () => {
         setLoading(true);
         setList(
-            data.concat([...new Array(count)].map(() => ({ loading: true, name: "", picture: "" }))),
+            data.concat([...new Array(count)].map(() => ({
+                discuss_id: 0,
+                discuss_uid: "",
+                discuss_name: "",
+                discuss_ava: "",
+                discuss_details: "",
+                discuss_date: "",
+                content_flag: 0,
+                child_descuss: [],
+                loading: false
+            }))),
         );
-        fetch(fakeDataUrl)
-            .then((res) => res.json())
-            .then((res) => {
-                const newData = data.concat(res.results);
-                setData(newData);
-                setList(newData);
-                setLoading(false);
-                window.dispatchEvent(new Event('resize'));
-            });
+        const searchParams = new URLSearchParams(window.location.search);
+        setSize(sizes + 1)
+        const params = {
+            size: count,
+            page: sizes,
+            art_id: searchParams.get('id')
+        }
+        GetDiscuss(params).then(res => {
+            const newData = data.concat(res.data.data);
+            setData(newData);
+            setList(newData);
+            setLoading(false);
+            window.dispatchEvent(new Event('resize'));
+            if (res.data.data.length < count) {
+                setLoading(true);
+            }
+        })
+
+        // fetch(fakeDataUrl)
+        //     .then((res) => res.json())
+        //     .then((res) => {
+        //         const newData = data.concat(res.results);
+        //         setData(newData);
+        //         setList(newData);
+        //         setLoading(false);
+        //         window.dispatchEvent(new Event('resize'));
+        //     });
     };
 
     const loadMore1 =
@@ -143,6 +191,7 @@ const Discuss: React.FC = (props) => {
 
     return (
         <>
+            {contextHolder}
             <TextArea id="part-1"
                 onKeyDown={onChangeKey}
                 showCount
@@ -177,8 +226,8 @@ const Discuss: React.FC = (props) => {
                                     avatar={<Avatar src={item.Discuss_ava} />}
                                     title={
                                         <>
-                                        <a style={{fontSize:16,fontWeight:'bold'}} onClick={() => { showAreaDisuss(item.discuss_id,item.discuss_uid,item.discuss_name) }}>{item.discuss_name+" "}</a>
-                                        <p style={{color:'#d9d9d9',fontSize:12}}>{item.discuss_date}</p>
+                                            <a style={{ fontSize: 16, fontWeight: 'bold' }} onClick={() => { showAreaDisuss(item.discuss_id, item.discuss_uid, item.discuss_name) }}>{item.discuss_name + " "}</a>
+                                            <p style={{ color: '#d9d9d9', fontSize: 12 }}>{item.discuss_date}</p>
                                         </>
                                     }
                                     description={item.discuss_details}
@@ -204,7 +253,12 @@ const Discuss: React.FC = (props) => {
                                                 <Skeleton avatar title={false} loading={item.loading} active>
                                                     <List.Item.Meta
                                                         avatar={<Avatar src={i.discuss_ava} />}
-                                                        title={<a onClick={() => { showAreaDisuss(i.discuss_name) }}>{i.discuss_name}</a>}
+                                                        title={
+                                                            <>
+                                                                <a style={{ fontSize: 16, fontWeight: 'bold' }} onClick={() => { showAreaDisuss(i.discuss_id, i.discuss_uid, i.discuss_name) }}>{i.discuss_name + " "}</a>
+                                                                <p style={{ color: '#d9d9d9', fontSize: 12 }}>{i.discuss_date}</p>
+                                                            </>
+                                                        }
                                                         description={i.discuss_details}
                                                     />
                                                 </Skeleton>
